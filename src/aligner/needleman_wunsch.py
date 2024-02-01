@@ -1,5 +1,5 @@
 '''
-Needleman-Wunsch algorithm
+global alignment: Needleman-Wunsch algorithm
 
 longest common subsequences
 

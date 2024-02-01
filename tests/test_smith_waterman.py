@@ -51,41 +51,38 @@ class TestNeedlemanWunsch(TestCase):
         c = sw(ref_seq, match, mismatch, gap)
         c.init_matrix(seq)
         c.cal_score()
-        print(c.m)
         assert np.array_equal(c.m, expect)
 
 
-    # @data(
-    #     [
-    #         'ACGCATCA', 'ACTGATTCA', 2, -3, -2,
-    #         [(8, 8, 9), (6, 7, 8), (4, 6, 7), (6, 6, 6), (4, 5, 5), \
-    #          (2, 4, 4), (4, 3, 4), (2, 2, 3), (4, 2, 2), (2, 1, 1)],
-    #     ],
-    #     [
-    #         'CTAAGT', 'CTCGT', 1, -1, -2,
-    #         [(1, 6, 5), (0, 5, 4), (0, 4, 4), (1, 3, 3), (2, 2, 2), (1, 1, 1)],
-    #     ],
-    #     [
-    #         'CTAAGT', 'CTCGT', 1, 0, 0,
-    #         [(4, 6, 5), (3, 5, 4), (2, 4, 3), (2, 3, 2), (2, 2, 2), (1, 1, 1)],
-    #     ],
-    # )
-    # @unpack
-    # def test_trace_back(self, ref_seq, seq, match, mismatch, gap, expect):
-    #     c = nw(ref_seq, match, mismatch, gap)
-    #     c.init_matrix(seq)
-    #     c.cal_score()
-    #     path = c.trace_back()
-    #     assert path == expect
+    @data(
+        # start-point is not 0
+        [
+            'ACGCATCA', 'ACTGATTCA', 2, -3, -2,
+            [
+                [(8, 8, 9), (6, 7, 8), (4, 6, 7)]
+            ],
+        ],
+        # multiple matches
+        [
+            'CTAAGT', 'CTCGT', 1, 0, 0,
+            [
+                [(2, 2, 2), (1, 1, 1)],
+                [(2, 6, 5), (1, 5, 4)]
+            ],
+        ],
+        # typical alignment: start from max value to 0, only one match
+        [
+            'TCTATATCCGT', 'ATGCATCCCATGAC', 2, -3, -2, 
+            [
+                [(8, 9, 8), (6, 8, 7), (4, 7, 6), (2, 6, 5)]
+            ],
+        ],
+    )
+    @unpack
+    def test_trace_back(self, ref_seq, seq, match, mismatch, gap, expect):
+        c = sw(ref_seq, match, mismatch, gap)
+        c.init_matrix(seq)
+        c.cal_score()
+        paths = c.traces()
+        assert paths == expect
 
-    # @data(
-    #     ['ACGCATCA', 'ACTGATTCA', 7],
-    #     ['CTAAGT', 'CTCGT', 4],
-    # )
-    # @unpack
-    # def test_count_max_matches(self, ref_seq, seq, expect):
-    #     c = nw(ref_seq, 1, 0, 0)
-    #     c.init_matrix(seq)
-    #     c.cal_score()
-    #     res = c.last_score()
-    #     assert res == expect
