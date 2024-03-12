@@ -1,5 +1,5 @@
 '''
-pytest -s tests/test_needleman_wunsch.py
+pytest -s tests/test_smith_waterman.py
 '''
 from .helper import *
 from src.aligner import SmithWaterman as sw

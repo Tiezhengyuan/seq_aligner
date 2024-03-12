@@ -33,6 +33,7 @@ class SmithWaterman:
                 s = self.match if self.ref_seq[i-1] == self.seq[j-1] else self.mismatch
                 diag = self.m[i-1, j-1] + s
                 left = self.m[i, j-1] + self.gap
+                # the lowest score is zero
                 self.m[i, j] = np.max([top, diag, left, 0])
                 if self.m[i,j] > self.max_score:
                     self.max_score = self.m[i, j]
@@ -50,7 +51,7 @@ class SmithWaterman:
         return paths
 
     def trace_back(self, next_point, path):
-        # add point
+        # end recursive or add point
         if next_point[0] == 0 or (path and next_point[0] > path[-1][0]):
             return path
         path.append(next_point)
