@@ -12,10 +12,17 @@ class TrieNode:
     
     @property
     def is_root(self):
+        '''
+        value of root is empty
+        root node has no parent
+        '''
         return True if self.parent is None else False
 
     @property
     def is_leave(self):
+        '''
+        leave node has not children
+        '''
         return True if self.children == {} else False
 
     def append(self, new_val):

@@ -87,10 +87,10 @@ class Trie:
         prefix_end_node = self.get_prefix(prefix)
         branch_node = prefix_end_node.trace_branch()
         branch_node.cut()
-        pool = list(branch_node.traverse())
+        # delete nodes
         n= 1
-        for p in pool:
+        for p in branch_node.traverse():
             del p
-            n+=1
+            n += 1
         del branch_node
         return n
